@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uma surpresa para você 💗</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page-shell">
+    <section class="access-card" id="access-screen" aria-labelledby="access-title">
+      <div class="heart" aria-hidden="true">💗</div>
+      <h1 id="access-title">Essa carta é só para você 💗</h1>
+      <p class="subtitle">Digite a senha para abrir sua surpresa.</p>
+
+      <form id="password-form" novalidate>
+        <label for="password">Senha</label>
+        <input
+          id="password"
+          name="password"
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          placeholder="10/09/2026"
+          maxlength="10"
+          aria-describedby="error-message"
+          required
+        >
+        <button type="submit">Abrir carta 💌</button>
+        <p id="error-message" class="error-message" role="alert" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="letter-card" id="letter" aria-labelledby="letter-title" hidden>
+      <div class="letter-decoration" aria-hidden="true">💌</div>
+      <p class="eyebrow">Uma mensagem para você</p>
+      <h2 id="letter-title">Minha carta</h2>
+      <div class="letter-content">
+        <p>Essa carta foi feita especialmente para você.</p>
+        <p>Espero que este pequeno gesto deixe seu dia mais bonito e traga um sorriso ao seu rosto. Você é muito especial para mim. 💗</p>
+        <p class="signature">Com carinho,<br>uma pessoa que gosta muito de você ✨</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
