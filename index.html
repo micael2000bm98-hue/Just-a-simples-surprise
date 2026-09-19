@@ -1,48 +1,209 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Uma surpresa para você 💗</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <main class="page-shell">
-    <section class="access-card" id="access-screen" aria-labelledby="access-title">
-      <div class="heart" aria-hidden="true">💗</div>
-      <h1 id="access-title">Essa carta é só para você 💗</h1>
-      <p class="subtitle">Digite a senha para abrir sua surpresa.</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carta Secreta</title>
+    <style>
+      :root {
+        --bg1: #f9e9ef;
+        --bg2: #f5dfe7;
+        --card: rgba(255, 255, 255, 0.78);
+        --text: #5a2541;
+        --accent: #d96d9d;
+        --accent-dark: #b9467a;
+        --error: #b42318;
+        --shadow: rgba(179, 92, 135, 0.2);
+      }
 
-      <form id="password-form" novalidate>
-        <label for="password">Senha</label>
-        <input
-          id="password"
-          name="password"
-          type="text"
-          inputmode="numeric"
-          autocomplete="off"
-          placeholder="10/09/2026"
-          maxlength="10"
-          aria-describedby="error-message"
-          required
-        >
-        <button type="submit">Abrir carta 💌</button>
-        <p id="error-message" class="error-message" role="alert" aria-live="polite"></p>
-      </form>
-    </section>
+      * {
+        box-sizing: border-box;
+      }
 
-    <section class="letter-card" id="letter" aria-labelledby="letter-title" hidden>
-      <div class="letter-decoration" aria-hidden="true">💌</div>
-      <p class="eyebrow">Uma mensagem para você</p>
-      <h2 id="letter-title">Minha carta</h2>
-      <div class="letter-content">
-        <p>Essa carta foi feita especialmente para você.</p>
-        <p>Espero que este pequeno gesto deixe seu dia mais bonito e traga um sorriso ao seu rosto. Você é muito especial para mim. 💗</p>
-        <p class="signature">Com carinho,<br>uma pessoa que gosta muito de você ✨</p>
-      </div>
-    </section>
-  </main>
+      html, body {
+        margin: 0;
+        min-height: 100%;
+        height: 100%;
+        font-family: "Segoe UI", sans-serif;
+      }
 
-  <script src="script.js"></script>
-</body>
+      body {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, var(--bg1), var(--bg2));
+        color: var(--text);
+      }
+
+      .page {
+        width: min(90vw, 560px);
+      }
+
+      .lock-screen {
+        background: var(--card);
+        border: 1px solid rgba(217, 109, 157, 0.15);
+        border-radius: 24px;
+        padding: 30px 22px;
+        box-shadow: 0 20px 60px var(--shadow);
+        text-align: center;
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+
+      .lock-screen h1 {
+        margin: 0 0 18px;
+        font-size: clamp(1.9rem, 4vw, 2.6rem);
+      }
+
+      .lock-screen form {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .lock-screen input {
+        width: 100%;
+        padding: 14px 16px;
+        border-radius: 12px;
+        border: 1px solid rgba(185, 70, 120, 0.22);
+        background: rgba(255, 255, 255, 0.7);
+        font-size: 1.05rem;
+        color: var(--text);
+        outline: none;
+      }
+
+      .lock-screen input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 4px rgba(217, 109, 157, 0.12);
+      }
+
+      .lock-screen button {
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+        color: white;
+        font-weight: 700;
+        padding: 14px 18px;
+        cursor: pointer;
+        box-shadow: 0 8px 18px rgba(217, 109, 157, 0.35);
+        transition: transform 0.2s ease, filter 0.2s ease;
+      }
+
+      .lock-screen button:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.03);
+      }
+
+      .error-message {
+        min-height: 28px;
+        margin-top: 12px;
+        color: var(--error);
+        font-weight: 600;
+      }
+
+      .letter {
+        display: none;
+        opacity: 0;
+        transform: translateY(24px) scale(0.96);
+        transition: opacity 0.9s ease, transform 0.9s ease;
+      }
+
+      .letter.visible {
+        display: block;
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        animation: reveal 0.9s ease;
+      }
+
+      .letter-image {
+        width: 100%;
+        max-width: 650px;
+        display: block;
+        margin: 0 auto;
+        border-radius: 26px;
+        box-shadow: 0 20px 60px rgba(156, 90, 118, 0.25);
+        object-fit: contain;
+      }
+
+      @keyframes reveal {
+        from {
+          opacity: 0;
+          transform: translateY(18px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <section class="lock-screen" id="lockScreen">
+        <h1>Essa carta é só para você 💗</h1>
+
+        <form id="passwordForm" novalidate>
+          <input
+            id="passwordInput"
+            type="text"
+            maxlength="10"
+            placeholder="dd/mm/yyyy"
+            aria-label="Senha da carta"
+          />
+
+          <button type="submit">Abrir carta 💌</button>
+        </form>
+
+        <div id="errorMessage" class="error-message" aria-live="polite"></div>
+      </section>
+
+      <section class="letter" id="letter">
+        <img
+          class="letter-image"
+          src="assets/carta.jpg"
+          alt="Carta secreta"
+        />
+      </section>
+    </div>
+
+    <script>
+      // Troque a senha aqui facilmente no futuro
+      const CORRECT_PASSWORD = "10/09/2026";
+
+      const form = document.getElementById("passwordForm");
+      const input = document.getElementById("passwordInput");
+      const errorMessage = document.getElementById("errorMessage");
+      const lockScreen = document.getElementById("lockScreen");
+      const letter = document.getElementById("letter");
+
+      function isValidDateFormat(value) {
+        return /^\d{2}\/\d{2}\/\d{4}$/.test(value);
+      }
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const value = input.value.trim();
+
+        if (!isValidDateFormat(value)) {
+          errorMessage.textContent = "Hmm... acho que essa não é a senha 💗";
+          input.value = "";
+          input.focus();
+          return;
+        }
+
+        if (value === CORRECT_PASSWORD) {
+          errorMessage.textContent = "";
+          lockScreen.style.display = "none";
+          letter.classList.add("visible");
+          input.value = "";
+          return;
+        }
+
+        errorMessage.textContent = "Hmm... acho que essa não é a senha 💗";
+        input.value = "";
+        input.focus();
+      });
+    </script>
+  </body>
 </html>
